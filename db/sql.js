@@ -1,5 +1,5 @@
 var mysql      = require("mysql");
-var connection = mysql.createConnection({
+var db = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
     password : 'root',
@@ -8,7 +8,7 @@ var connection = mysql.createConnection({
 });
 
 
-connection.connect(function(err) {
+db.connect(function(err) {
     if (err) {
         console.error('error connecting: ' + err.stack);
         return;
@@ -17,10 +17,10 @@ connection.connect(function(err) {
     console.log('connected as id ' + connection.threadId);
 });
 
-
-connection.query('describe users', function (error, results, fields) {
+db.
+db.query('describe users;', function (error, results, fields) {
     if (error) throw error;
         console.log('The solution is: ', results);
 });
 
-connection.end();
+db.end();
