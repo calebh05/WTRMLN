@@ -1,0 +1,16 @@
+<% include partials/header %>
+<div class="container">
+    <header class="jumbotron">
+            <h1>
+                List of Users
+            </h1>
+    </header>
+
+        <% users.forEach(function(user) { %>
+        <div>
+            <h4><%= user.name %> - <%= user.mail%></h4>
+        </div>
+        <% }); %>
+
+</div>
+<% include partials/footer %>
