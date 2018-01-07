@@ -1,5 +1,12 @@
 <% include partials/header %>
-
-<h1> Welcome </h1>
-<a href="/register">Sign Up</a>
+<div class="container">
+    <header class="jumbotron">
+        Home
+    </header>
+    <h4><%= currentUser %></h4>
+    <div>
+        <li><a href="/users">Users</a></li>
+        <li><a href="/services">Services</a></li>
+    </div>
+</div>
 <% include partials/footer %>

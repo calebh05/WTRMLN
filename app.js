@@ -12,6 +12,11 @@ var express = require("express"),
     LocalStrategy       = require("passport-local"),
     passportLocalMongoose = require("passport-local-mongoose"),
     seedDb              = require("./seeds");
+
+var userRoutes = require("./routes/users");
+    serviceRoutes = require("./routes/services");
+    authRoutes = require("./routes/index");
+
     server              = app.listen(8080);
     if(server) {
         console.log("Server Started, buckle yo britches, bitches.");
@@ -45,168 +50,14 @@ app.use(function(req, res, next){
     next();
 });
 
-var date = new Date();
-var n = date.toDateString();
-var time = date.toLocaleTimeString();
+app.use(authRoutes);
+app.use(userRoutes);
+app.use(serviceRoutes);
+
 
 app.get("/secret", isLoggedIn, function(req, res){
     res.render("secret");
 });
-
-app.get("/", function(req, res) {
-    res.render("home");
-});
-
-app.get("/posts", function(req, res) {
-    var posts = [
-        {title: "Welcome", author: "admin"},
-        {title: "About", author: "admin"}
-    ];
-
-	res.render("posts", {posts: posts})
-});
-
-app.get("/register", function(req, res){
-    res.render("register");
-});
-
-app.post("/register", function(req, res){
-    req.body.username
-    req.body.password
-    User.register(new User({username: req.body.username}), req.body.password, function(err, user){
-        if(err){
-            console.log(err);
-            res.render("register");
-        }
-        passport.authenticate("local")(req, res, function(){
-            res.redirect("users");
-        });
-    });
-});
-
-app.get("/login", function(req, res){
-   res.render("login");
-});
-//Login Logic
-app.post("/login", passport.authenticate("local", {
-    successRedirect: "/users",
-    failureRedirect: "/login"
-    }) ,function(req, res) {
-
-});
-
-app.get("/logout", function(req, res){
-    req.logout();
-    res.redirect("/");
-    console.log("Logging you out, bitch");
-})
-
-app.get("/services", function(req, res) {
-    res.render("services");
-});
-
-app.post("/addUser", function(req, res) {
-    var newUser = req.body.newuser;
-    users.push(newUser);
-    console.log("User Added Successfully: " + newUser);
-    res.redirect("/users");
-});
-
-    //Create & add user to db
-app.post("/users", isLoggedIn, function(req, res) {
-    // get data from form and add to users array
-    var name = req.body.name;
-    var email = req.body.email;
-    var description = req.body.description;
-    var newUser = {name: name, email: email, description: description};
-    req.body.user = req.sanitize(req.body.user);
-    console.log("===========================");
-    console.log(req.body);
-    User.create(newUser, function(err, newlyCreated){
-        if(err){
-            console.log(err);
-        } else {
-            console.log(newlyCreated);
-            res.redirect("/users");
-        }
-    });
-});
-    // Find all users
-app.get("/users", isLoggedIn, function(req, res) {
-    User.find({}, function(err, allUsers){
-        if(err){
-            console.log(err);
-        } else {
-            res.render("users", {users: allUsers, currentUser: req.user});
-        }
-    });
-});
-
-    // Add new user form
-app.get("/users/new", isLoggedIn, function(req, res) {
-    res.render("new")
-});
-
-    // Find user by ID
-    // show template on show page
-app.get("/users/:id",isLoggedIn, function(req, res) {
-    // res.send("Show temp");
-    User.findById(req.params.id).populate("description").exec(function(err, foundUser){
-        if(err){
-            console.log(err);
-        } else {
-            console.log("Found User: " + foundUser);
-            res.render("show", {user: foundUser});
-        }
-    });
-});
-
-// EDIT ROUTE
-app.get("/users/:id/edit",isLoggedIn, function(req, res) {
-    User.findById(req.params.id, function(err, foundUser){
-        if(err){
-            res.redirect("/users");
-        } else {
-            res.render("edit", {user: foundUser});
-        }
-    });
-    /*res.render("edit");*/
-});
-
-// UPDATE ROUTE
-app.put("/users/:id",isLoggedIn, function(req, res) {
-    User.findByIdAndUpdate(req.params.id, req.body.user, function(err, updatedUser){
-        if(err){
-            res.redirect("/users");
-        } else {
-            console.log("Updated user: " + req.params.id);
-            res.redirect("/users/" + req.params.id);
-        }
-    });
-});
-
-    //DELETE USER
-app.delete("/users/:id",isLoggedIn, function(req, res){
-    User.findByIdAndRemove(req.params.id, function(err){
-        if(err){
-            console.log(err);
-            res.redirect("/users");
-        } else {
-            console.log("User: " + req.params.id + "has been deleted.");
-            res.redirect("/users");
-        }
-    })
-});
-
-// app.get("/results", function(req, res) {
-//     request("http://omdbapi.com/?s=california", function (error, response, body) {
-//         if (!error && response.StatusCode == 200) {
-//             var data = JSON.parse(body);
-//             res.render("results", {data: data})
-//         }
-//     });
-// });
-
 
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
@@ -227,7 +78,7 @@ var gracefulShutdown = function() {
         console.error("Could not close connections in time, forcefully shutting down");
         process.exit()
     }, 10*1000);
-}
+};
 
 // listen for TERM signal .e.g. kill
 process.on ('SIGTERM', gracefulShutdown);
