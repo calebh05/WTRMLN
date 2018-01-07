@@ -8,7 +8,15 @@
     <a href="/users/<%= user.id %>/edit" class="btn btn-primary">Edit</a>
     <a href="/users/" class="btn btn-primary">Go back</a>
 </p>
-</div>
+
+<p> Service Name    ||  Date Started    || Product Description</p>
+
+<% user.description.forEach(function(descrip){ %>
+    <%  descrip.forEach(function(mac){ %>
+     <% console.log(descrip); %>
+        <p><%= mac.serviceName %> - <%= mac.dateStart %> - <%= mac.description %></p>
+    <% }) %>
+<% }) %>
 
 <form id="delete" action="/users/<%= user._id %>?_method=DELETE" method="POST">
     <button class="btn btn-primary">Delete User</button>

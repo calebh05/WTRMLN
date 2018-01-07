@@ -6,11 +6,14 @@ var express = require("express"),
     expressSanitizer = require("express-sanitizer"),
     mongo = require("mongodb"),
     mongoose = require("mongoose"),
+    User    = require("./models/user");
+    Services = require("./models/services");
+    seedDb  = require("./seeds");
     server = app.listen(8080);
     if(server) {
         console.log("Server Started, buckle yo britches, bitches.");
     }
-
+seedDb();
 mongoose.connect("mongodb://localhost/wtrmln");
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -19,20 +22,10 @@ app.use(methodOverride("_method"));
 app.use(expressSanitizer());
 
 
-// schema setup
-var userSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    description: String
-});
+var date = new Date();
+var n = date.toDateString();
+var time = date.toLocaleTimeString();
 
-var user = mongoose.model("User", userSchema);
-
-var users = [
-    {name: "One", email: "x@mail.com", dateStart: "dd/mm/yy", dateEnd: "dd/mm/yy"},
-    {name: "Two", email: "x@mail.com", dateStart: "dd/mm/yy", dateEnd: "dd/mm/yy"},
-    {name: "Three", email: "x@mail.com", dateStart: "dd/mm/yy", dateEnd: "dd/mm/yy"}
-]
 
 app.get("/", function(req, res) {
     var person = req.params.person;
@@ -64,11 +57,12 @@ app.post("/users", function(req, res) {
     // get data from form and add to users array
     var name = req.body.name;
     var email = req.body.email;
-    var newUser = {name: name, email: email};
+    var description = req.body.description;
+    var newUser = {name: name, email: email, description: description};
     req.body.user = req.sanitize(req.body.user);
-    console.log("===========");
+    console.log("===========================");
     console.log(req.body);
-    user.create(newUser, function(err, newlyCreated){
+    User.create(newUser, function(err, newlyCreated){
         if(err){
             console.log(err);
         } else {
@@ -79,7 +73,7 @@ app.post("/users", function(req, res) {
 });
     // Find all users
 app.get("/users", function(req, res) {
-    user.find({}, function(err, allUsers){
+    User.find({}, function(err, allUsers){
         if(err){
             console.log(err);
         } else {
@@ -95,10 +89,11 @@ app.get("/users/new", function(req, res) {
     // show template on show page
 app.get("/users/:id", function(req, res) {
     // res.send("Show temp");
-    user.findById(req.params.id, function(err, foundUser){
+    User.findById(req.params.id, function(err, foundUser){
         if(err){
             console.log(err);
         } else {
+            console.log("Found User: ");
             res.render("show", {user: foundUser});
         }
     });
@@ -106,7 +101,7 @@ app.get("/users/:id", function(req, res) {
 
 // EDIT ROUTE
 app.get("/users/:id/edit", function(req, res) {
-    user.findById(req.params.id, function(err, foundUser){
+    User.findById(req.params.id, function(err, foundUser){
         if(err){
             res.redirect("/users");
         } else {
@@ -118,7 +113,7 @@ app.get("/users/:id/edit", function(req, res) {
 
 // UPDATE ROUTE
 app.put("/users/:id", function(req, res) {
-    user.findByIdAndUpdate(req.params.id, req.body.user, function(err, updatedUser){
+    User.findByIdAndUpdate(req.params.id, req.body.user, function(err, updatedUser){
         if(err){
             res.redirect("/users");
         } else {
@@ -130,7 +125,7 @@ app.put("/users/:id", function(req, res) {
 
     //DELETE USER
 app.delete("/users/:id", function(req, res){
-    user.findByIdAndRemove(req.params.id, function(err){
+    User.findByIdAndRemove(req.params.id, function(err){
         if(err){
             console.log(err);
             res.redirect("/users");
