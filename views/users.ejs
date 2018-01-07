@@ -5,10 +5,11 @@
                 List of Users
             </h1>
     </header>
+    <h4><%= currentUser %></h4>
 
         <% users.forEach(function(user) { %>
         <div>
-            <h4><%= user.name %> - <%= user.email%></h4>
+            <h4><%= user.username %> - <%= user.email%></h4>
         </div>
         <p>
             <a href="/users/<%= user._id %>" class="btn btn-primary">More info</a>

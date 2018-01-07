@@ -1,11 +1,10 @@
 var mongoose = require("mongoose");
 
+//POST TO user
+
 var serviceSchema = new mongoose.Schema({
     serviceName : String,
-    dateStart   : Date,
-    dateEnd     : Date,
-    ipAddress   : String,
-    description : String,
+    info : String
 });
 
 module.exports = mongoose.model("Services", serviceSchema);

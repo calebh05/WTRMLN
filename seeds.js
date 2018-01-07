@@ -4,19 +4,34 @@ var mongoose = require("mongoose");
 
     var data = [
         {
-            name: "User1",
+            username: "User1",
             email: "User1@test.com",
-            description: "User Uno"
+            description: [
+                {
+                    serviceName: "Testing",
+                    info:       "testing"
+                }
+            ]
         },
         {
-            name: "User2",
+            username: "User2",
             email: "User2@test.com",
-            description: "User Dos"
+            description: [
+                {
+                    serviceName: "Testing",
+                    info:       "testing"
+                }
+            ]
         },
         {
-            name: "User3",
+            username: "User3",
             email: "User3@test.com",
-            description: "User Tres"
+            description: [
+                {
+                    serviceName: "Testing",
+                    info:       "testing"
+                }
+            ]
         },
     ]
 
@@ -31,29 +46,27 @@ var mongoose = require("mongoose");
             }
             // Add users
             data.forEach(function(seed){
-                User.create(seed, function(err, data){
+                User.create(seed, function(err, activeUser){
                         if(err){
                             console.log(err);
-                        } else {
-                            console.log("Added user: " + data);
-                            // Add a service
+                         } else {
+                             console.log("Added " + activeUser.description + " ===> " + activeUser.username);
+                                //Add a service
                             Services.create(
                                 {
-                                    serviceName : "Cheeto 1",
-                                    dateStart   : Date.now(),
-                                    dateEnd     : Date.now(30),
-                                    IP          : "127.0.0.1",
-                                    description : "Testing"
-                                }, function(err, service){
+                                    serviceName: "Cheato 1",
+                                    info        : "Some Text"
+                                }, function(err, activeService){
                                     if(err){
                                         console.log(err);
                                     } else {
-                                        data.description.push(service);
-                                        data.save();
-                                        console.log("Added " + service + " to " + data.name);
+                                        activeUser.description.push(activeService);
+                                        activeUser.save();
+                                        console.log("Added new service");
                                     }
                                 });
                         }
+
                     });
                 });
             });
