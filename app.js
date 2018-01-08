@@ -22,7 +22,7 @@ var userRoutes = require("./routes/users");
         console.log("Server Started, buckle yo britches, bitches.");
     }
 
-seedDb();
+// seedDb();
 mongoose.connect("mongodb://localhost/wtrmln");
 
 

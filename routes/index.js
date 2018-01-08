@@ -23,6 +23,7 @@ router.post("/register", function(req, res){
             res.render("register");
         }
         passport.authenticate("local")(req, res, function(){
+            console.log("Created new User: " + req.body.username);
             res.redirect("users");
         });
     });
@@ -48,11 +49,5 @@ router.get("/logout", function(req, res){
     console.log("Logging you out, bitch");
 });
 
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
 
 module.exports = router;
