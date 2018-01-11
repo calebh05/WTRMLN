@@ -33,8 +33,8 @@ var userRoutes = require("./routes/users");
     }
 
 // seedDb();
-mongoose.connect("mongodb://wtrmln:Qwerty123@159.89.86.209:27017/wtrmln");
-
+var db = 'mongodb://wtrmln:Qwerty123@wtrmln.net/admin';
+mongoose.connect(db);
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
