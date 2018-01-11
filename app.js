@@ -12,13 +12,21 @@ var express = require("express"),
     LocalStrategy       = require("passport-local"),
     passportLocalMongoose = require("passport-local-mongoose"),
     seedDb              = require("./seeds");
+    http                = require("http");
 
 var userRoutes = require("./routes/users");
     serviceRoutes = require("./routes/services");
     authRoutes = require("./routes/index");
 
+
+  // server =  http.createServer(function (req, res) {
+  //       res.writeHead(200, {'Content-Type': 'text/plain'});
+  //       res.end('Hello World\n');
+  //   }).listen(8080, 'localhost');
+
     server              = app.listen(8080);
     if(server) {
+        /*console.log(server);*/
         console.log("Server Started, buckle yo britches, bitches.");
     }
 
