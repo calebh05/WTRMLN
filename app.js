@@ -13,6 +13,8 @@ var express = require("express"),
     passportLocalMongoose = require("passport-local-mongoose"),
     seedDb              = require("./seeds");
     http                = require("http");
+    ejs                 = require("ejs");
+
 
 var userRoutes = require("./routes/users");
     serviceRoutes = require("./routes/services");
@@ -39,6 +41,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.use(expressSanitizer());
+app.enable('trust proxy');
 
 app.use(require("express-session")({
     secret: "Secret message iz here!",
