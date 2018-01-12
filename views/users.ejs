@@ -1,19 +1,29 @@
 <% include partials/header %>
 <div class="container">
-    <header class="jumbotron">
-            <h2>
-                List of Users
-            </h2>
-    </header>
-
-        <% users.forEach(function(user) { %>
-        <div>
-            <h4><%= user.username %> - <%= user.email%></h4>
-        </div>
-        <p>
-            <a href="/users/<%= user._id %>" class="btn btn-primary">More info</a>
-        </p>
-        <% }); %>
-
+    <div class="docs-example">
+        <br>
+        <h2 class="docs-header">Users</h2>
+        <br>
+            <table class="u-max-full-width">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Email </th>
+                        <th> ID </th>
+                        <th>More</th>
+                    </tr>
+                </thead>
+            <% users.forEach(function(user) { %>
+            <tbody>
+            <tr>
+                <td><%= user.username %></td>
+                <td><a href="mailto:<%= user.email %>">Email</a></td>
+                <td><%= user._id %></td>
+                <td><a href="/users/<%= user._id %>" class="btn btn-primary">More info</a></td>
+            </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    </div>
 </div>
 <% include partials/footer %>

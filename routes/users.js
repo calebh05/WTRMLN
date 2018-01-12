@@ -8,8 +8,8 @@ router.post("/users", middleware.isLoggedIn, function(req, res) {
     // get data from form and add to users array
     var username = req.body.username;
     var email = req.body.email;
-    var description = req.body.description;
-    var newUser = {username: username, email: email, description: description};
+    var password = req.body.password;
+    var newUser = {email: email, username: username, password: password};
     req.body.user = req.sanitize(req.body.user);
     console.log("===========================");
     console.log(req.body);
@@ -57,11 +57,11 @@ router.get("/users/:id/edit", middleware.isLoggedIn, function(req, res) {
     User.findById(req.params.id, function(err, foundUser){
         if(err){
             res.redirect("/users");
+            console.log(err);
         } else {
             res.render("edit", {user: foundUser});
         }
     });
-    /*res.render("edit");*/
 });
 
 // UPDATE ROUTE
@@ -71,6 +71,7 @@ router.put("/users/:id", middleware.isLoggedIn, function(req, res) {
             res.redirect("/users");
         } else {
             console.log("Updated user: " + req.params.id);
+            updatedUser.save();
             res.redirect("/users/" + req.params.id);
         }
     });

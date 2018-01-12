@@ -33,7 +33,7 @@ var userRoutes = require("./routes/users");
     }
 
 // seedDb();
-var db = 'mongodb://wtrmln:Qwerty123@wtrmln.net/admin';
+var db = 'mongodb://localhost:27017/test';
 mongoose.connect(db);
 
 app.set("view engine", "ejs");

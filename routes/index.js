@@ -17,13 +17,14 @@ router.get("/register", function(req, res){
 router.post("/register", function(req, res){
     req.body.username
     req.body.password
-    User.register(new User({username: req.body.username}), req.body.password, function(err, user){
+    req.body.email
+    User.register(new User({email: req.body.email, username: req.body.username}), req.body.password, function(err, user){
         if(err){
             console.log(err);
             res.render("register");
         }
         passport.authenticate("local")(req, res, function(){
-            console.log("Created new User: " + req.body.username);
+            console.log("Created new User: " + req.body.username + "( " + req.body.email + " )");
             res.redirect("users");
         });
     });

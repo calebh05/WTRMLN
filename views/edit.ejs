@@ -1,17 +1,20 @@
 <% include partials/header %>
 <div class="container">
     <div class="row">
-        <h1 style="text-align: center;"> Edit <%= user.name %></h1>
+        <h1 style="text-align: center;"> Edit <%= currentUser.username %></h1>
         <div style="width: 30%; margin: 0 auto;">
             <form action="/users/<%= user._id %>?_method=PUT" method="POST">
                 <div class="form-group">
-                    <input class="form-control" type="text" name="user[name]" value="<%= user.name %>">
+                    <input class="form-control" type="text" name="username" value="<%= currentUser.username %>">
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="input" name="user[email]>" value="<%= user.email %>">
+                    <input class="form-control" type="input" name="email" value="<%= currentUser.email %>">
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-lg btn-default btn-block">Submit</button>
+                    <input class="form-control" type="input" name="description" value="<%= currentUser.description.info  %>">
+                </div>
+                <div class="form-group">
+                    <button>Submit</button>
                 </div>
             </form>
         </div>
