@@ -1,23 +1,29 @@
 <% include partials/header %>
+<div class="container">
+    <div class="docs-example">
+        <br>
+        <h2 class="docs-header"><%= user.username %></h2>
+        <h2 class="docs-header"><%= user.id %></h2>
+        <br>
 
-<div>
-    <h4><%= user.username %> - <%= user.email%></h4>
-    <p><%= user.id %></p>
+    <form id="edit" action="/users/<%= user.id %>/edit" method="GET">
+            <button class="button">Edit User</button>
+        </form>
+
+        <form id="delete" action="/users/<%= user._id %>?_method=DELETE" method="POST">
+            <button class="button">Delete User</button>
+        </form>
+
+    </div>
 </div>
-<p>
-    <a href="/users/<%= user.id %>/edit" class="btn btn-primary">Edit</a>
-    <a href="/users/" class="btn btn-primary">Go back</a>
-</p>
-
-<p> Service Name    ||  Date Started    || Product Description</p>
-
-
-        <p><%= user.username %> - <%= user.description %></p>
-
-
-<form id="delete" action="/users/<%= user._id %>?_method=DELETE" method="POST">
-    <button class="btn btn-primary">Delete User</button>
-</form>
-
+<br>
+<br>
+<br>
+<br>
+<div>
+    <form id="back" action="/users/" method="get">
+        <button class="button">Go back</button>
+    </form>
+</div>
 
 <% include partials/footer %>

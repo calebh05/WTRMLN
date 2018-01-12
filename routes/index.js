@@ -1,7 +1,7 @@
 var express = require("express");
     router  = express.Router(),
     User    = require("../models/user"),
-    passport            = require("passport"),
+    passport = require("passport"),
     middleware = require("../middleware")
 
 router.get("/", function(req, res) {
@@ -15,10 +15,10 @@ router.get("/register", function(req, res){
 
     //Register Signup POST
 router.post("/register", function(req, res){
-    req.body.username
-    req.body.password
-    req.body.email
-    User.register(new User({email: req.body.email, username: req.body.username}), req.body.password, function(err, user){
+    var username = req.body.username;
+        password = req.body.password;
+        email = req.body.email;
+    User.register(new User({email: req.body.email, username: req.body.username }), req.body.password, function(err, user){
         if(err){
             console.log(err);
             res.render("register");

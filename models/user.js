@@ -5,12 +5,10 @@ var userSchema = new mongoose.Schema({
     email   : String,
     username: String,
     password: String,
-    description: [
-        {
-            serviceName: String,
-            info       : String
-        }
-    ]
+    description: {
+        serviceName: String,
+        info: String
+    }
 });
 
 userSchema.plugin(passportLocalMongoose);

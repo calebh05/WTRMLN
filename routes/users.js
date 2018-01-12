@@ -46,13 +46,13 @@ router.get("/users/:id", middleware.isLoggedIn, function(req, res) {
         if(err){
             console.log(err);
         } else {
-            console.log("Found User: " + foundUser);
+            // console.log("Found User: " + foundUser);
             res.render("show", {user: foundUser});
         }
     });
 });
 
-// EDIT ROUTE
+// EDIT USER ROUTE
 router.get("/users/:id/edit", middleware.isLoggedIn, function(req, res) {
     User.findById(req.params.id, function(err, foundUser){
         if(err){
@@ -64,15 +64,16 @@ router.get("/users/:id/edit", middleware.isLoggedIn, function(req, res) {
     });
 });
 
-// UPDATE ROUTE
+// UPDATE USER ROUTE
 router.put("/users/:id", middleware.isLoggedIn, function(req, res) {
     User.findByIdAndUpdate(req.params.id, req.body.user, function(err, updatedUser){
         if(err){
             res.redirect("/users");
         } else {
-            console.log("Updated user: " + req.params.id);
-            updatedUser.save();
-            res.redirect("/users/" + req.params.id);
+            console.log(updatedUser);
+            console.log("Updated user: " + req.body.user);
+            console.log("body.user " + req.body.password);
+            res.redirect("/users/");
         }
     });
 });
