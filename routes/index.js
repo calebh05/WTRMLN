@@ -18,13 +18,15 @@ router.post("/register", function(req, res){
     var username = req.body.username;
         password = req.body.password;
         email = req.body.email;
+        description = req.body.description;
     User.register(new User({email: req.body.email, username: req.body.username }), req.body.password, function(err, user){
         if(err){
             console.log(err);
             res.render("register");
         }
         passport.authenticate("local")(req, res, function(){
-            console.log("Created new User: " + req.body.username + "( " + req.body.email + " )");
+            console.log(user);
+            console.log("Created new User: " + req.body.username + "( " + req.body.email + " ) " + user.description );
             res.redirect("users");
         });
     });

@@ -1,4 +1,4 @@
-mongodb/*
-node_modules/*
+mongodb/
+node_modules/
 .DS_Store
-.idea/*
+.idea/

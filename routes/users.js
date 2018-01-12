@@ -1,27 +1,48 @@
 var express = require("express");
     router = express.Router();
     User    = require("../models/user");
+    Nu      = require("../models/nuSchema");
     middleware = require("../middleware");
 
 //Create & add user to db
+// router.post("/users", middleware.isLoggedIn, function(req, res) {
+//     // get data from form and add to users array
+//     var username = req.body.username;
+//     var email = req.body.email;
+//     var password = req.body.password;
+//     var newUser = {email: email, username: username, password: password};
+//     req.body.user = req.sanitize(req.body.user);
+//     console.log("===========================");
+//     console.log(req.body);
+//     User.create(newUser, function(err, newlyCreated){
+//         if(err){
+//             console.log(err);
+//         } else {
+//             console.log(newlyCreated);
+//             res.redirect("/users");
+//         }
+//     });
+// });
+    //CREATE NU USER & ADD TO DB
 router.post("/users", middleware.isLoggedIn, function(req, res) {
-    // get data from form and add to users array
     var username = req.body.username;
-    var email = req.body.email;
-    var password = req.body.password;
-    var newUser = {email: email, username: username, password: password};
-    req.body.user = req.sanitize(req.body.user);
-    console.log("===========================");
-    console.log(req.body);
-    User.create(newUser, function(err, newlyCreated){
-        if(err){
-            console.log(err);
-        } else {
-            console.log(newlyCreated);
-            res.redirect("/users");
-        }
-    });
+        email = req.body.email;
+        password = req.body.password;
+        description = { serviceName: serviceName, info: info };
+        User = { email: email, username: username, password: password, description: description };
+        req.body.user = req.sanitize(req.body.user);
+        console.log("================================");
+        console.log(req.body);
+        Nu.create(User, function(err, nuUser){
+            if(err){
+                console.log(err);
+            } else {
+                console.log(nuUser);
+                res.redirect("/users");
+            }
+        });
 });
+
 // Find all users
 router.get("/users", middleware.isLoggedIn, function(req, res) {
     User.find({}, function(err, allUsers){
@@ -66,13 +87,13 @@ router.get("/users/:id/edit", middleware.isLoggedIn, function(req, res) {
 
 // UPDATE USER ROUTE
 router.put("/users/:id", middleware.isLoggedIn, function(req, res) {
-    User.findByIdAndUpdate(req.params.id, req.body.user, function(err, updatedUser){
+    User.findByIdAndUpdate(req.params.id, req.body.username, function(err, updatedUser){
         if(err){
             res.redirect("/users");
         } else {
             console.log(updatedUser);
-            console.log("Updated user: " + req.body.user);
-            console.log("body.user " + req.body.password);
+            console.log("Updated user: " + req.body.username);
+            console.log();
             res.redirect("/users/");
         }
     });
