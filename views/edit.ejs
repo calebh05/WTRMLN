@@ -4,7 +4,7 @@
         <br>
         <h2 class="docs-header">Edit <%= currentUser.username %></h2>
         <br>
-            <form action="/users/<%= user._id %>?_method=PUT" method="POST">
+            <form action="/users/<%= currentUser._id %>?_method=PUT" method="POST">
                 <div class="row">
                     <label for="username">Username</label>
                     <input type="text" name="username" value="<%= currentUser.username.toUpperCase() %>">
@@ -15,7 +15,7 @@
                 </div>
                 <div class="row">
                     <label for="username">Info</label>
-                    <input type="text" name="description" value="<%= currentUser.description.serviceName  %>">
+                    <input type="text" name="description[info]" value="">
                 </div>
                 <br>
                 <div class="form-group">

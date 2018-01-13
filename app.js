@@ -6,25 +6,22 @@ var express = require("express"),
     expressSanitizer    = require("express-sanitizer"),
     mongo               = require("mongodb"),
     mongoose            = require("mongoose"),
-    Services            = require("./models/services"),
+    Services            = require("./models/descriptions"),
     User                = require("./models/user"),
     passport            = require("passport"),
     LocalStrategy       = require("passport-local"),
     passportLocalMongoose = require("passport-local-mongoose"),
-    seedDb              = require("./seeds");
-    http                = require("http");
-    ejs                 = require("ejs");
+    seedDb              = require("./seeds"),
+    http                = require("http"),
+    ejs                 = require("ejs"),
+    flash               = require("connect-flash"),
+    Nu              = require("./models/nuSchema")
 
 
 var userRoutes = require("./routes/users");
-    serviceRoutes = require("./routes/services");
+    serviceRoutes = require("./routes/descriptions");
     authRoutes = require("./routes/index");
 
-
-  // server =  http.createServer(function (req, res) {
-  //       res.writeHead(200, {'Content-Type': 'text/plain'});
-  //       res.end('Hello World\n');
-  //   }).listen(8080, 'localhost');
 
     server              = app.listen(8080);
     if(server) {
@@ -41,6 +38,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.use(expressSanitizer());
+app.use(flash());
 app.enable('trust proxy');
 
 app.use(require("express-session")({
@@ -58,6 +56,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next){
     res.locals.currentUser = req.user;
+    res.locals.message = req.flash("error");
     next();
 });
 
@@ -74,6 +73,7 @@ function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next();
     }
+    req.flash("Error", "Please Login First!");
     res.redirect("/login");
 }
     // Kill it with fire

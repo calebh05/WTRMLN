@@ -3,37 +3,36 @@
     <div class="row">
         <div class="container">
                     <form action="/register" method="POST">
-                        <div class="row">
-                            <h4> Register</h4>
-                            <div class="container">
+                        <h1><%= message %></h1>
+                        <h4> Register</h4>
+                        <div class="docs-section">
+                            <div class="row docs-example">
                                 <label for="email">Email</label>
                                 <input type="text" name="email">
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="container">
+
+
+                            <div class="row docs-example">
                                 <label for="email">Username</label>
                                 <input type="text" name="username">
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="container">
+
+
+                            <div class="row docs-example">
                                 <label for="password">Password</label>
-                                <input type="password" name="password">
+                                <input type="text" name="password" required >
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="container">
+
+                            <div class="row docs-example">
                                 <input type="hidden" name="description[]">
                             </div>
                         </div>
-                        <br>
-                        <div class="row">
-                            <div class="container">
-                                <button>Submit</button>
-                            </div>
+
+                        <div class="row docs-example">
+                            <button>Submit</button>
                         </div>
-                    </form>
+
+               </form>
         </div>
     </div>
 </div>

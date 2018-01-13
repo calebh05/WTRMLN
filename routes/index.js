@@ -1,8 +1,10 @@
-var express = require("express");
+var express = require("express"),
     router  = express.Router(),
     User    = require("../models/user"),
     passport = require("passport"),
-    middleware = require("../middleware")
+    middleware = require("../middleware"),
+    Nu     = require("../models/nuSchema"),
+    flash = require("connect-flash")
 
 router.get("/", function(req, res) {
     res.render("home");
@@ -18,21 +20,42 @@ router.post("/register", function(req, res){
     var username = req.body.username;
         password = req.body.password;
         email = req.body.email;
+        description = req.body.description;
     User.register(new User({email: req.body.email, username: req.body.username }), req.body.password, function(err, user){
         if(err){
             console.log(err);
             res.render("register");
         }
         passport.authenticate("local")(req, res, function(){
-            console.log("Created new User: " + req.body.username + "( " + req.body.email + " )");
+            console.log(user);
+            console.log("Created new User: " + req.body.username + "( " + req.body.email + " ) " + user.description );
             res.redirect("users");
         });
     });
 });
 
+// router.post("/register", function(req, res){
+//     var username = req.body.username;
+//         password = req.body.password;
+//         email    = req.body.email;
+//         description = req.body.description;
+//
+//         Nu.register(new Nu({email: req.body.email, username: req.body.username}), req.body.password, function(err, user){
+//             if(err){
+//                 console.log(err);
+//                 req.flash("error");
+//                 res.render("register", {message: req.flash("error")});
+//             }
+//             passport.authenticate("local")(req, res, function(){
+//                 console.log(user);
+//                 res.redirect("users");
+//             });
+//         });
+// });
+
     //Login Page
 router.get("/login", function(req, res){
-    res.render("login");
+    res.render("login", {message: req.flash("Error")});
 });
 
     //Login Logic
@@ -46,8 +69,9 @@ router.post("/login", passport.authenticate("local", {
     //Logout
 router.get("/logout", function(req, res){
     req.logout();
+    req.flash("error", "Logged you out");
     res.redirect("/");
-    console.log("Logging you out, bitch");
+    console.log("Logged user out");
 });
 
 
