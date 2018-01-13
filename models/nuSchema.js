@@ -4,7 +4,7 @@ var passportLocalMongoose = require("passport-local-mongoose");
 var nuSchema = new mongoose.Schema({
     email   : String,
     username: { type: String, required: true, unique: true},
-    password: { type: String, required: true},
+    password: String,
     description: {
         serviceName: String,
         info: {
@@ -13,6 +13,7 @@ var nuSchema = new mongoose.Schema({
         },
     }
 });
+
 
 nuSchema.plugin(passportLocalMongoose);
 

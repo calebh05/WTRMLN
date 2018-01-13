@@ -13,10 +13,10 @@
 
 <body>
 <div class="container">
-
     <nav class="navbar">
         <div class="container">
             <ul class="navbar-list">
+                <div class="container">
                 <%  if(!currentUser){ %>
                 <li class="active navbar-item"><a class="navbar-link" href="/login">Login <span class="sr-only">(current)</span></a></li>
                 <li class="navbar-item"><a class="navbar-link" href="/register">Register</a></li>
@@ -25,9 +25,16 @@
                 <li class="navbar-item"><a class="navbar-link" href="/services">Services</a></li>
                 <li class="navbar-item"><a class="navbar-link" href="/logout">Logout</a></li>
                 <% } %>
-
+                </div>
             </ul>
         </div>
-        </div>
     </nav>
+</div>
+<div class="container">
+    <div class="container">
+        <h1><%= message %></h1>
+    </div>
+</div>
+
+
 
