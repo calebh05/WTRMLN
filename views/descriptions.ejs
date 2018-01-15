@@ -1,16 +1,27 @@
 <% include partials/header %>
-
-
 <div class="container">
-    <header class="jumbotron">
-        <h2>
-            Services
-        </h2>
-    </header>
-
     <div class="row">
-        <div class="col-1">
-            <a href="https://discord.gg/2mmy7us">Services</a>
+        <div class="container">
+            <form action="/descriptions" method="POST">
+                <h1><%= message %></h1>
+                <h4> Add info to <%= user %></h4>
+                <div class="docs-section">
+                    <div class="row docs-example">
+                        <label for="description[serviceName]">Service Name</label>
+                        <input type="text" name="description[serviceName]">
+                    </div>
+
+                    <div class="row docs-example">
+                        <label for="description[info]">Info</label>
+                        <input type="text" name="description[info]">
+                    </div>
+                </div>
+
+                <div class="row docs-example">
+                    <button>Submit</button>
+                </div>
+
+            </form>
         </div>
     </div>
 </div>

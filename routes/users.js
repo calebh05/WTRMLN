@@ -3,7 +3,8 @@ var express = require("express"),
     User    = require("../models/user"),
     Nu      = require("../models/nuSchema"),
     middleware = require("../middleware"),
-    methodOverride      = require("method-override")
+    methodOverride      = require("method-override"),
+    Descriptions    = require("../models/description")
 
     // Create & add user to db
 router.post("/users", middleware.isLoggedIn, function(req, res) {
@@ -87,15 +88,26 @@ router.get("/users/:id/edit", middleware.isLoggedIn, function(req, res) {
 });
 
 // UPDATE USER ROUTE
-router.put("/users/:id", middleware.isLoggedIn, function(req, res) {
-    User.findByIdAndUpdate(req.params.id, req.body.username, function(err, updatedUser){
+router.put("/users/:id/", middleware.isLoggedIn, function(req, res) {
+    var username = req.body.username;
+    var email = req.body.email;
+    var password = req.body.password;
+    var description = req.body.description;
+    User.findByIdAndUpdate(req.params.id, req.body.description, function(err, updatedUser){
         if(err){
+            console.log(err);
             res.redirect("/users");
         } else {
-            console.log(updatedUser);
-            console.log("Updated user: " + req.body.username);
-            console.log();
-            res.redirect("/users/");
+            Descriptions.create(updatedUser, function(err, desc){
+                if(err){
+                    console.log(err);
+                } else {
+                    console.log("Commentors username: " + req.user.username);
+                    user.description.push(desc);
+                    user.save();
+                    res.redirect("/users/" + user._id);
+                }
+            });
         }
     });
 });
