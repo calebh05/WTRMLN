@@ -3,7 +3,7 @@ var express = require("express"),
     User    = require("../models/user"),
     middleware = require("../middleware"),
     methodOverride      = require("method-override"),
-    Description    = require("../models/description"),
+    Description    = require("../models/description")
 
     // Create & add user to db
 router.post("/users", middleware.isLoggedIn, function(req, res) {
