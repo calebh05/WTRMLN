@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
     User     = require("./models/user");
-    Services = require("./models/description");
+    Description = require("./models/description");
 
     var data = [
         {
@@ -52,7 +52,7 @@ var mongoose = require("mongoose");
                          } else {
                              console.log("Added " + activeUser.description + " ===> " + activeUser.username);
                                 //Add a service
-                            Services.create(
+                            Description.create(
                                 {
                                     serviceName: "Cheato 1",
                                     info        : "Some Text"

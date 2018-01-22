@@ -2,20 +2,20 @@
 <div class="container">
     <div class="docs-example">
         <br>
-        <h2 class="docs-header">Edit <%= currentUser.username %></h2>
+        <h2 class="docs-header">Edit <%= user.username %></h2>
         <br>
-            <form action="/users/<%= currentUser._id %>?_method=PUT" method="POST">
+            <form action="/users/<%= user._id %>?_method=PUT" method="POST">
                 <div class="row">
                     <label for="username">Username</label>
-                    <input type="text" name="username" value="<%= currentUser.username.toUpperCase() %>">
+                    <input type="text" name="username" value="<%= user.username.toUpperCase() %>">
                 </div>
                 <div class="row">
-                    <label for="username">Email</label>
-                    <input type="text" name="email" value="<%= currentUser.email.toUpperCase() %>">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" value="<%= user.email.toUpperCase() %>">
                 </div>
                 <div class="row">
-                    <label for="username">Info</label>
-                    <input type="text" name="description[info]" value="">
+                    <label for="Info">Info</label>
+                    <input type="text" name="description[info]" value="<%= user.vitals.description.info %>">
                 </div>
                 <br>
                 <div class="form-group">

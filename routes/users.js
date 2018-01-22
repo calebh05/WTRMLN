@@ -1,10 +1,10 @@
 var express = require("express"),
     router = express.Router(),
     User    = require("../models/user"),
-    Nu      = require("../models/nuSchema"),
     middleware = require("../middleware"),
     methodOverride      = require("method-override"),
-    Descriptions    = require("../models/description")
+    Description    = require("../models/description"),
+    flash = require("connect-flash")
 
     // Create & add user to db
 router.post("/users", middleware.isLoggedIn, function(req, res) {
@@ -25,25 +25,6 @@ router.post("/users", middleware.isLoggedIn, function(req, res) {
         }
     });
 });
-    //CREATE NU USER & ADD TO DB
-// router.post("/users", middleware.isLoggedIn, function(req, res) {
-//     var username = req.body.username;
-//         email = req.body.email;
-//         password = req.body.password;
-//         description = { serviceName: serviceName, info: info };
-//         User = { email: email, username: username, password: password, description: description };
-//         req.body.user = req.sanitize(req.body.user);
-//         console.log("================================");
-//         console.log(req.body);
-//         Nu.create(User, function(err, nuUser){
-//             if(err){
-//                 console.log(err);
-//             } else {
-//                 console.log(nuUser);
-//                 res.redirect("/users");
-//             }
-//         });
-// });
 
 // Find all users
 router.get("/users", middleware.isLoggedIn, function(req, res) {
@@ -65,11 +46,13 @@ router.get("/users/new", middleware.isLoggedIn, function(req, res) {
 // show template on show page
 router.get("/users/:id", middleware.isLoggedIn, function(req, res) {
     // res.send("Show temp");
-    User.findById(req.params.id).populate("description").exec(function(err, foundUser){
+    User.findById(req.params.id, function(err, foundUser){
         if(err){
-            console.log(err);
+            console.log("Error: " + err);
+            console.log(foundUser);
+            res.redirect("/users/");
         } else {
-            // console.log("Found User: " + foundUser);
+            console.log("Found User: " + foundUser);
             res.render("show", {user: foundUser});
         }
     });
@@ -88,24 +71,30 @@ router.get("/users/:id/edit", middleware.isLoggedIn, function(req, res) {
 });
 
 // UPDATE USER ROUTE
-router.put("/users/:id/", middleware.isLoggedIn, function(req, res) {
-    var username = req.body.username;
-    var email = req.body.email;
-    var password = req.body.password;
-    var description = req.body.description;
-    User.findByIdAndUpdate(req.params.id, req.body.description, function(err, updatedUser){
-        if(err){
-            console.log(err);
-            res.redirect("/users");
+router.put("/users/:id", middleware.isLoggedIn, function(req, res) {
+    var inf = req.body.description.info;
+        id = req.params.id;
+        username = req.body.username;
+        serviceName = req.body.serviceName;
+
+    // user = new User;
+
+    User.findByIdAndUpdate(id, inf, {new: true}, function (err, foundUser) {
+
+        if (err) {
+            console.log("Error: " + err);
+            console.log("User update failed! User: " + foundUser.username);
+            res.redirect("/users/:id");
         } else {
-            Descriptions.create(updatedUser, function(err, desc){
-                if(err){
+            console.log("User info updated: " + foundUser.username);
+            foundUser.vitals.description.info = inf;
+            foundUser.save(function(err, foundUser){
+                if(err) {
                     console.log(err);
+                    res.redirect("/users/:id", {message: req.flash("Error updating User")});
                 } else {
-                    console.log("Commentors username: " + req.user.username);
-                    user.description.push(desc);
-                    user.save();
-                    res.redirect("/users/" + user._id);
+                    console.log("User saved: " + foundUser.username);
+                    res.redirect("/users/");
                 }
             });
         }
