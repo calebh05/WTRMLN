@@ -4,7 +4,6 @@ var express = require("express"),
     middleware = require("../middleware"),
     methodOverride      = require("method-override"),
     Description    = require("../models/description"),
-    flash = require("connect-flash")
 
     // Create & add user to db
 router.post("/users", middleware.isLoggedIn, function(req, res) {
@@ -91,7 +90,7 @@ router.put("/users/:id", middleware.isLoggedIn, function(req, res) {
             foundUser.save(function(err, foundUser){
                 if(err) {
                     console.log(err);
-                    res.redirect("/users/:id", {message: req.flash("Error updating User")});
+                    res.redirect("/users/:id");
                 } else {
                     console.log("User saved: " + foundUser.username);
                     res.redirect("/users/");
