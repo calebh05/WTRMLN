@@ -15,23 +15,28 @@ var express = require("express"),
     http                = require("http"),
     ejs                 = require("ejs"),
     flash               = require("connect-flash"),
-    Nu              = require("./models/nuSchema")
+    config              = require('./config/config.json');
 
 
 var userRoutes = require("./routes/users");
     serviceRoutes = require("./routes/descriptions");
     authRoutes = require("./routes/index");
 
-
     server              = app.listen(8080);
     if(server) {
         /*console.log(server);*/
-        console.log("Server Started, buckle yo britches, bitches.");
+        console.log("Server Starting...");
     }
 
 // seedDb();
-var db = 'mongodb://localhost:27017/test';
-mongoose.connect(db);
+var db = {
+        uri : "mongodb://",
+        host: config.wtrmln.dev.host,
+        port: config.wtrmln.dev.port,
+        name  : config.wtrmln.dev.db
+    };
+
+mongoose.connect(db.uri + db.host + db.port + db.name);
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -57,6 +62,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use(function(req, res, next){
     res.locals.currentUser = req.user;
     res.locals.message = req.flash("error");
+    res.locals.title   = "WTRMLN";
     next();
 });
 
