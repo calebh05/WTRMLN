@@ -6,7 +6,7 @@ var express = require("express"),
     expressSanitizer    = require("express-sanitizer"),
     mongo               = require("mongodb"),
     mongoose            = require("mongoose"),
-    Description            = require("./models/description"),
+    Description         = require("./models/description"),
     User                = require("./models/user"),
     passport            = require("passport"),
     LocalStrategy       = require("passport-local"),
@@ -15,7 +15,7 @@ var express = require("express"),
     http                = require("http"),
     ejs                 = require("ejs"),
     flash               = require("connect-flash"),
-    Nu              = require("./models/nuSchema")
+    Nu              	= require("./models/nuSchema")
 
 
 var userRoutes = require("./routes/users");
@@ -26,12 +26,16 @@ var userRoutes = require("./routes/users");
     server              = app.listen(8080);
     if(server) {
         /*console.log(server);*/
-        console.log("Server Started, buckle yo britches, bitches.");
+        console.log(app + " Started");
     }
 
 // seedDb();
-var db = 'mongodb://localhost:27017/test';
+
+var db = 'mongodb://prod:prodtest@159.89.86.209:27017/admin';
 mongoose.connect(db);
+mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+// mongoose.connection.on('open', console.open.bind(console, 'MongoDb connect success:'));
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
