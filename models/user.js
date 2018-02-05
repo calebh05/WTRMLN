@@ -19,7 +19,7 @@ var userSchema = new mongoose.Schema({
         }
     },
     access: {
-        power: Number,
+        power: Boolean,
         dateCreated: { type: Date, default: Date.now() },
         dateUpdated: { type: Date }
     }

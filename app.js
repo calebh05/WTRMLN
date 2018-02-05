@@ -9,6 +9,7 @@ var express = require("express"),
     LocalStrategy       = require("passport-local"),
     ejs                 = require("ejs"),
     flash               = require("connect-flash"),
+    middlewareObj       = require("./middleware"),
     config              = require('./config/config.json');
 
 
@@ -65,17 +66,10 @@ app.use(userRoutes);
 app.use(serviceRoutes);
 
 
-app.get("/secret", isLoggedIn, function(req, res){
+app.get("/secret", middlewareObj.isLoggedIn, function(req, res){
     res.render("secret");
 });
 
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    req.flash("Error", "Please Login First!");
-    res.redirect("/login");
-}
     // Kill it with fire
 var gracefulShutdown = function() {
     console.log("The arsonist has arrived.");

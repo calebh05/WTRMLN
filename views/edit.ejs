@@ -5,6 +5,7 @@
         <h2 class="docs-header">Edit <%= user.username %></h2>
         <br>
             <form action="/users/<%= user._id %>?_method=PUT" method="POST">
+                <% if(currentUser.access.power == true){ %>
                 <div class="row">
                     <label for="username">Username</label>
                     <input type="text" name="username" value="<%= user.username.toUpperCase() %>">
@@ -17,6 +18,20 @@
                     <label for="Info">Info</label>
                     <input type="text" name="description[info]" value="<%= user.vitals.description.info %>">
                 </div>
+                <% } else { %>
+                <div class="row">
+                    <label for="username">Username</label>
+                <input type="text" name="username" disabled value="<%= user.username.toUpperCase() %>">
+                </div>
+                <div class="row">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" disabled value="<%= user.email.toUpperCase() %>">
+                </div>
+                <div class="row">
+                    <label for="Info">Info</label>
+                    <input type="text" name="description[info]" disabled value="<%= user.vitals.description.info %>">
+                </div>
+                <% } %>
                 <br>
                 <div class="form-group">
                     <button>Submit</button>

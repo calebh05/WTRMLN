@@ -14,7 +14,7 @@ router.get("/register", function(req, res){
 
     //Register Signup POST
 router.post("/register", function(req, res){
-    // Create new User s
+    // Create new Users
     User.register(new User({ email: req.body.email, username: req.body.username, description: req.body.description }), req.body.password, function(err, user){
         if(err){
             console.log(err);
@@ -22,7 +22,8 @@ router.post("/register", function(req, res){
         }
         passport.authenticate("local")(req, res, function(){
             console.log(user);
-            console.log("Created new User: " + req.body.username + "( " + req.body.email + " ) " + req.body.description.info );
+            user.save(user.access.dateCreated = Date.now(), user.access.power = 0);
+            console.log("Created new User: " + req.body.username + "(" + req.body.email + ") " + req.body.description.info );
             res.redirect("users");
         });
     });

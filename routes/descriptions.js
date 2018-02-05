@@ -4,7 +4,7 @@ var express = require("express");
     Description    = require("../models/description");
     middleware = require("../middleware");
 
-router.get("/descriptions",middleware.isLoggedIn, function(req, res) {
+router.get("/descriptions", middleware.isLoggedIn, function(req, res) {
     res.render("descriptions");
 });
 

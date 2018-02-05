@@ -1,15 +1,16 @@
 var express = require("express"),
     router = express.Router(),
     User    = require("../models/user"),
+    passport = require("passport"),
     middleware = require("../middleware");
 
     // Create & add user to db
 router.post("/users", middleware.isLoggedIn, function(req, res) {
     // get data from form and add to users array
     var username = req.body.username;
-    var email = req.body.email;
-    var password = req.body.password;
-    var newUser = {email: email, username: username, password: password};
+        email = req.body.email;
+        password = req.body.password;
+        newUser = {email: email, username: username, password: password};
     req.body.user = req.sanitize(req.body.user);
     console.log("===========================");
     console.log(req.body);
@@ -57,6 +58,7 @@ router.get("/users/:id", middleware.isLoggedIn, function(req, res) {
 
 // EDIT USER ROUTE
 router.get("/users/:id/edit", middleware.isLoggedIn, function(req, res) {
+    var admin = req.user.access.power;
     User.findById(req.params.id, function(err, foundUser){
         if(err){
             res.redirect("/users");
@@ -68,11 +70,12 @@ router.get("/users/:id/edit", middleware.isLoggedIn, function(req, res) {
 });
 
 // UPDATE USER ROUTE
-router.put("/users/:id", middleware.isLoggedIn, function(req, res) {
+router.put("/users/:id", middleware.isLoggedIn, /*middleware.isAdmin,*/ function(req, res) {
     var inf = req.body.description.info;
         id = req.params.id;
         username = req.body.username;
         serviceName = req.body.serviceName;
+        admin       = req.user.access.power;
     // user = new User;
     User.findByIdAndUpdate(id, inf, {new: true}, function (err, foundUser) {
         if (err) {

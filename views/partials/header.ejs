@@ -22,7 +22,7 @@
                 <% } else { %>
                 <li class="navbar-item"><a class="navbar-link" href="/users">Users</a></li>
                 <li class="navbar-item"><a class="navbar-link" href="/descriptions">Services</a></li>
-                <li class="navbar-item"><a class="navbar-link" href="/logout">Logout</a></li>
+                <li class="navbar-item"><a class="navbar-link" href="/logout">Logout(<%= currentUser.username %>)</a></li>
                 <% } %>
                 </div>
             </ul>
