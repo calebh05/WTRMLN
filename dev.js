@@ -9,26 +9,27 @@ var express = require("express"),
     LocalStrategy       = require("passport-local"),
     ejs                 = require("ejs"),
     flash               = require("connect-flash"),
-    config              = require('./config/config.json');
+    middlewareObj          = require("./middleware"),
+    config              = require('./config/config.dev.json');
 
 
 var userRoutes = require("./routes/users");
-    serviceRoutes = require("./routes/descriptions");
-    authRoutes = require("./routes/index");
+serviceRoutes = require("./routes/descriptions");
+authRoutes = require("./routes/index");
 
-    server              = app.listen(8080);
-    if(server) {
-        /*console.log(server);*/
-        console.log("Server Starting...");
-    }
+server              = app.listen(8080);
+if(server) {
+    /*console.log(server);*/
+    console.log("Server Starting...");
+}
 
 // seedDb();
 var db = {
-        uri : "mongodb://",
-        host: config.wtrmln.prod.host,
-        port: config.wtrmln.prod.port,
-        name: config.wtrmln.prod.db
-    };
+    uri : "mongodb://",
+    host: config.wtrmln.dev.host,
+    port: config.wtrmln.dev.port,
+    name: config.wtrmln.dev.db
+};
 
 mongoose.connect(db.uri + db.host + db.port + db.name);
 
@@ -76,7 +77,8 @@ function isLoggedIn(req, res, next){
     req.flash("Error", "Please Login First!");
     res.redirect("/login");
 }
-    // Kill it with fire
+
+// Kill it with fire
 var gracefulShutdown = function() {
     console.log("The arsonist has arrived.");
     server.close(function() {

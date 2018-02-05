@@ -1,10 +1,7 @@
 var express = require("express"),
     router  = express.Router(),
     User    = require("../models/user"),
-    passport = require("passport"),
-    middleware = require("../middleware"),
-    Nu     = require("../models/nuSchema"),
-    flash = require("connect-flash")
+    passport = require("passport");
 
 router.get("/", function(req, res) {
     res.render("home");

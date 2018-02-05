@@ -1,10 +1,15 @@
 {
   "wtrmln": {
+    "dev": {
+      "db"  : "/devlocal",
+      "host": "localhost:",
+      "port": 27017
+    },
     "test": {
       "db"  : "/test",
       "host": "159.89.86.209:",
       "port": 27017
-      },
+    },
     "prod": {
       "db": "/prod",
       "host": "159.89.86.209:",

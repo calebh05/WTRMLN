@@ -1,9 +1,7 @@
 var express = require("express"),
     router = express.Router(),
     User    = require("../models/user"),
-    middleware = require("../middleware"),
-    methodOverride      = require("method-override"),
-    Description    = require("../models/description")
+    middleware = require("../middleware");
 
     // Create & add user to db
 router.post("/users", middleware.isLoggedIn, function(req, res) {
@@ -75,11 +73,8 @@ router.put("/users/:id", middleware.isLoggedIn, function(req, res) {
         id = req.params.id;
         username = req.body.username;
         serviceName = req.body.serviceName;
-
     // user = new User;
-
     User.findByIdAndUpdate(id, inf, {new: true}, function (err, foundUser) {
-
         if (err) {
             console.log("Error: " + err);
             console.log("User update failed! User: " + foundUser.username);

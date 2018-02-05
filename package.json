@@ -25,6 +25,7 @@
     "express-sanitizer": "^1.0.2",
     "express-sesssion": "^1.15.5",
     "method-override": "^2.3.10",
+    "mongo-express": "^0.44.0",
     "mongod": "^2.0.0",
     "mongodb": "^3.0.1",
     "mongoose": "^5.0.0-rc2",
