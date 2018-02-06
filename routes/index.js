@@ -1,7 +1,8 @@
 var express = require("express"),
     router  = express.Router(),
     User    = require("../models/user"),
-    passport = require("passport");
+    passport = require("passport"),
+    flash   = require("connect-flash");
 
 router.get("/", function(req, res) {
     res.render("home");
@@ -14,16 +15,18 @@ router.get("/register", function(req, res){
 
     //Register Signup POST
 router.post("/register", function(req, res){
-    // Create new Users
-    User.register(new User({ email: req.body.email, username: req.body.username, description: req.body.description }), req.body.password, function(err, user){
+    var email       = req.body.email;
+        userName    = req.body.username;
+        descrip     = req.body.description;
+        // Create new Users
+    User.register(new User({ email: email, username: userName, description: descrip }), req.body.password, function(err, user){
         if(err){
             console.log(err);
-            res.render("register");
+            req.flash("Error", "Username already taken.");
+            res.render("register", { message: req.flash("Error") });
         }
         passport.authenticate("local")(req, res, function(){
-            console.log(user);
-            user.save(user.access.dateCreated = Date.now(), user.access.power = 0);
-            console.log("Created new User: " + req.body.username + "(" + req.body.email + ") " + req.body.description.info );
+            user.save(user.access.dateCreated = Date.now(), user.access.power = false);
             res.redirect("users");
         });
     });
