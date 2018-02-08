@@ -58,6 +58,7 @@ router.post("/register", function(req, res){
         passport.authenticate("local")(req, res, function(){
             logger.info("Saving user: " + user.username);
             user.save(user.access.dateCreated = Date.now(), user.access.power = false);
+            req.flash("Success", "Successfully saved user.");
             res.redirect("users");
         });
     });

@@ -107,7 +107,7 @@ router.put("/users/:id", middleware.isLoggedIn, /*middleware.isAdmin,*/ function
                     logger.error(err);
                     res.redirect("/users/:id");
                 } else {
-                    logger.info("User saved: " + foundUser.username);
+                    logger.info("User saved: " + foundUser.vitals.username);
                     res.redirect("/users/");
                 }
             });
