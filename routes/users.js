@@ -2,8 +2,28 @@ var express = require("express"),
     router = express.Router(),
     User    = require("../models/user"),
     passport = require("passport"),
+    winston  = require("winston"),
     middleware = require("../middleware");
 
+const tsFormat = new Date().toLocaleTimeString();
+const logger = new (winston.Logger)({
+    transports: [
+        new (winston.transports.Console)({
+            name: "Users Console",
+            timestamp: tsFormat,
+            colorize: true,
+            level: "info"
+        }),
+        new (require('winston-daily-rotate-file'))({
+            name: "user logs",
+            filename: "./logs/-user.logs",
+            timestamp: tsFormat,
+            datePattern: "yyyy-MM-dd",
+            prepend: true,
+            level: "info"
+        })
+    ]
+});
     // Create & add user to db
 router.post("/users", middleware.isLoggedIn, function(req, res) {
     // get data from form and add to users array
@@ -12,13 +32,13 @@ router.post("/users", middleware.isLoggedIn, function(req, res) {
         password = req.body.password;
         newUser = {email: email, username: username, password: password};
     req.body.username = req.sanitize(req.body.username);
-    console.log("===========================");
-    console.log(newUser);
+    logger.info("===========================");
+    logger.info(newUser);
     User.create(newUser, function(err, newlyCreated){
         if(err){
-            console.log(err);
+            logger.info(err);
         } else {
-            console.log(newlyCreated);
+            logger.info("New User created: " + newlyCreated);
             res.redirect("/users");
         }
     });
@@ -28,8 +48,9 @@ router.post("/users", middleware.isLoggedIn, function(req, res) {
 router.get("/users", middleware.isLoggedIn, function(req, res) {
     User.find({}, function(err, allUsers){
         if(err){
-            console.log(err);
+            logger.error(err);
         } else {
+            logger.info("Users found successfully.");
             res.render("users", {users: allUsers, currentUser: req.user});
         }
     });
@@ -46,11 +67,10 @@ router.get("/users/:id", middleware.isLoggedIn, function(req, res) {
     // res.send("Show temp");
     User.findById(req.params.id, function(err, foundUser){
         if(err){
-            console.log("Error: " + err);
-            console.log(foundUser);
+            logger.error(err);
             res.redirect("/users/");
         } else {
-            console.log("Found User: " + foundUser);
+            logger.info(foundUser);
             res.render("show", {user: foundUser});
         }
     });
@@ -62,7 +82,7 @@ router.get("/users/:id/edit", middleware.isLoggedIn, function(req, res) {
     User.findById(req.params.id, function(err, foundUser){
         if(err){
             res.redirect("/users");
-            console.log(err);
+            logger.error(err);
         } else {
             res.render("edit", {user: foundUser});
         }
@@ -84,10 +104,10 @@ router.put("/users/:id", middleware.isLoggedIn, /*middleware.isAdmin,*/ function
             foundUser.vitals.description.info = inf;
             foundUser.save(foundUser.access.dateUpdated = Date.now(), function(err, foundUser){
                 if(err) {
-                    console.log(err);
+                    logger.error(err);
                     res.redirect("/users/:id");
                 } else {
-                    console.log("User saved: " + foundUser.username);
+                    logger.info("User saved: " + foundUser.username);
                     res.redirect("/users/");
                 }
             });
@@ -99,10 +119,10 @@ router.put("/users/:id", middleware.isLoggedIn, /*middleware.isAdmin,*/ function
 router.delete("/users/:id", middleware.isLoggedIn, function(req, res){
     User.findByIdAndRemove(req.params.id, function(err){
         if(err){
-            console.log(err);
+            logger.error(err);
             res.redirect("/users");
         } else {
-            console.log("User: " + req.params.id + "has been deleted.");
+            logger.info("User: " + req.params.id + "has been deleted.");
             res.redirect("/users");
         }
     });

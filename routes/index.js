@@ -2,7 +2,37 @@ var express  = require("express"),
     router   = express.Router(),
     User     = require("../models/user"),
     passport = require("passport"),
+    winston = require("winston"),
     flash    = require("connect-flash");
+
+
+// set logger constants & log files
+const tsFormat = new Date().toLocaleTimeString();
+const logger = new (winston.Logger)({
+    transports: [
+        new (winston.transports.Console)({
+            name: "IndexConsole",
+            timestamp: tsFormat,
+            colorize: true,
+            level: "info"
+        }),
+        new (require('winston-daily-rotate-file'))({
+            name: "index logs",
+            filename: "./logs/-index.logs",
+            timestamp: tsFormat,
+            datePattern: "yyyy-MM-dd",
+            prepend: true,
+            level: "info"
+        })
+    ]
+});
+
+logger.debug('DEBUG');
+logger.verbose('VERBOSE');
+logger.info('INFO');
+logger.warn('WARNING');
+logger.error('ERROR');
+
 
 router.get("/", function(req, res) {
     res.render("home");
@@ -21,11 +51,12 @@ router.post("/register", function(req, res){
         // Create new user and redirect
     User.register(new User({ email: email, username: userName, description: descrip }), req.body.password, function(err, user){
         if(err){
-            console.log(err);
+            logger.error(err);
             req.flash("Error", "Username already taken.");
             res.render("register", { message: req.flash("Error") });
         }
         passport.authenticate("local")(req, res, function(){
+            logger.info("Saving user: " + user.username);
             user.save(user.access.dateCreated = Date.now(), user.access.power = false);
             res.redirect("users");
         });
@@ -51,7 +82,7 @@ router.get("/logout", function(req, res){
     req.logout();
     req.flash("error", "Logged you out");
     res.redirect("/");
-    console.log("Logged user out");
+    logger.info("Logged user out");
 });
 
 
