@@ -1,8 +1,8 @@
-var express = require("express"),
-    router  = express.Router(),
-    User    = require("../models/user"),
+var express  = require("express"),
+    router   = express.Router(),
+    User     = require("../models/user"),
     passport = require("passport"),
-    flash   = require("connect-flash");
+    flash    = require("connect-flash");
 
 router.get("/", function(req, res) {
     res.render("home");
@@ -18,7 +18,7 @@ router.post("/register", function(req, res){
     var email       = req.body.email;
         userName    = req.body.username;
         descrip     = req.body.description;
-        // Create new Users
+        // Create new user and redirect
     User.register(new User({ email: email, username: userName, description: descrip }), req.body.password, function(err, user){
         if(err){
             console.log(err);

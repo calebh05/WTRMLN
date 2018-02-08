@@ -11,9 +11,9 @@ router.post("/users", middleware.isLoggedIn, function(req, res) {
         email = req.body.email;
         password = req.body.password;
         newUser = {email: email, username: username, password: password};
-    req.body.user = req.sanitize(req.body.user);
+    req.body.username = req.sanitize(req.body.username);
     console.log("===========================");
-    console.log(req.body);
+    console.log(newUser);
     User.create(newUser, function(err, newlyCreated){
         if(err){
             console.log(err);
@@ -79,13 +79,10 @@ router.put("/users/:id", middleware.isLoggedIn, /*middleware.isAdmin,*/ function
     // user = new User;
     User.findByIdAndUpdate(id, inf, {new: true}, function (err, foundUser) {
         if (err) {
-            console.log("Error: " + err);
-            console.log("User update failed! User: " + foundUser.username);
             res.redirect("/users/:id");
         } else {
-            console.log("User info updated: " + foundUser.username);
             foundUser.vitals.description.info = inf;
-            foundUser.save(function(err, foundUser){
+            foundUser.save(foundUser.access.dateUpdated = Date.now(), function(err, foundUser){
                 if(err) {
                     console.log(err);
                     res.redirect("/users/:id");
