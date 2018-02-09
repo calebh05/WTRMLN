@@ -78,7 +78,6 @@ router.get("/users/:id", middleware.isLoggedIn, function(req, res) {
 
 // EDIT USER ROUTE
 router.get("/users/:id/edit", middleware.isLoggedIn, function(req, res) {
-    var admin = req.user.access.power;
     User.findById(req.params.id, function(err, foundUser){
         if(err){
             res.redirect("/users");
@@ -92,10 +91,6 @@ router.get("/users/:id/edit", middleware.isLoggedIn, function(req, res) {
 // UPDATE USER ROUTE
 router.put("/users/:id", middleware.isLoggedIn, /*middleware.isAdmin,*/ function(req, res) {
     var inf = req.body.description.info;
-        id = req.params.id;
-        username = req.body.username;
-        serviceName = req.body.serviceName;
-        admin       = req.user.access.power;
     // user = new User;
     User.findByIdAndUpdate(id, inf, {new: true}, function (err, foundUser) {
         if (err) {
