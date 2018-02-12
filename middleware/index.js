@@ -8,5 +8,12 @@ middlewareObj.isLoggedIn = function(req, res, next){
     res.redirect("/login");
 };
 
+middlewareObj.isAdmin = function(req, res, next){
+    if(req.user.access.power === true){
+        return next();
+    }
+    req.flash("Error", "Insufficient Access!");
+    res.redirect("/");
+};
 
 module.exports = middlewareObj;

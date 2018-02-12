@@ -3,35 +3,9 @@ var express  = require("express"),
     User     = require("../models/user"),
     passport = require("passport"),
     winston = require("winston"),
+    logger  = require("../lib/logs.js"),
     flash    = require("connect-flash");
 
-
-// set logger constants & log files
-const tsFormat = new Date().toLocaleTimeString();
-const logger = new (winston.Logger)({
-    transports: [
-        new (winston.transports.Console)({
-            name: "IndexConsole",
-            timestamp: tsFormat,
-            colorize: true,
-            level: "info"
-        }),
-        new (require('winston-daily-rotate-file'))({
-            name: "index logs",
-            filename: "./logs/-index.logs",
-            timestamp: tsFormat,
-            datePattern: "yyyy-MM-dd",
-            prepend: true,
-            level: "info"
-        })
-    ]
-});
-
-logger.debug('DEBUG');
-logger.verbose('VERBOSE');
-logger.info('INFO');
-logger.warn('WARNING');
-logger.error('ERROR');
 
 
 router.get("/", function(req, res) {

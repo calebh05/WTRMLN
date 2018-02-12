@@ -4,7 +4,9 @@ var express = require("express"),
     methodOverride      = require("method-override"),
     expressSanitizer    = require("express-sanitizer"),
     mongoose            = require("mongoose"),
+    constants           = require("./lib/constants"),
     winston             = require("winston"),
+    logger              = require("./lib/logs"),
     User                = require("./models/user"),
     passport            = require("passport"),
     LocalStrategy       = require("passport-local"),
@@ -15,58 +17,14 @@ var express = require("express"),
 
 
 var userRoutes = require("./routes/users");
-serviceRoutes = require("./routes/descriptions");
-authRoutes = require("./routes/index");
+    serviceRoutes = require("./routes/descriptions");
+    authRoutes = require("./routes/index");
 
-server              = app.listen(8080);
+server  = app.listen(8080);
 if(server) {
     /*console.log(server);*/
     console.log("Server Starting...");
 }
-
-// Log and filesystem constants
-const fs = require('fs');
-const logDir = 'logs';
-
-// Create the log directory if it does not exist
-if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir);
-}
-
- // set logger constants & log files
-const tsFormat = new Date().toLocaleTimeString();
-const logger = new (winston.Logger)({
-    transports: [
-        new (winston.transports.Console)({
-            name: "Console",
-            timestamp: tsFormat,
-            colorize: true,
-            level: "info"
-        }),
-        new (require('winston-daily-rotate-file'))({
-            name: "info logs",
-            filename: "./logs/-info.logs",
-            timestamp: tsFormat,
-            datePattern: "yyyy-MM-dd",
-            prepend: true,
-            level: "info"
-        }),
-        new (require('winston-daily-rotate-file'))({
-            name: "error logs",
-            filename: "./logs/-error.logs",
-            timestamp: tsFormat,
-            datePattern: "yyyy-MM-dd",
-            prepend: true,
-            level: "error"
-        })
-    ]
-});
-// logger types
-// logger.debug('DEBUG');
-// logger.verbose('VERBOSE');
-// logger.info('INFO');
-// logger.warn('WARNING');
-// logger.error('ERROR');
 
 // seedDb();
 var db = {

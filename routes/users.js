@@ -3,27 +3,11 @@ var express = require("express"),
     User    = require("../models/user"),
     passport = require("passport"),
     winston  = require("winston"),
+    logger  = require("../lib/logs.js"),
     middleware = require("../middleware");
 
-const tsFormat = new Date().toLocaleTimeString();
-const logger = new (winston.Logger)({
-    transports: [
-        new (winston.transports.Console)({
-            name: "Users Console",
-            timestamp: tsFormat,
-            colorize: true,
-            level: "info"
-        }),
-        new (require('winston-daily-rotate-file'))({
-            name: "user logs",
-            filename: "./logs/-user.logs",
-            timestamp: tsFormat,
-            datePattern: "yyyy-MM-dd",
-            prepend: true,
-            level: "info"
-        })
-    ]
-});
+// logger.remove('user-log', 'error-log');
+
     // Create & add user to db
 router.post("/users", middleware.isLoggedIn, function(req, res) {
     // get data from form and add to users array
@@ -45,7 +29,7 @@ router.post("/users", middleware.isLoggedIn, function(req, res) {
 });
 
 // Find all users
-router.get("/users", middleware.isLoggedIn, function(req, res) {
+router.get("/users", middleware.isLoggedIn,  middleware.isAdmin, function(req, res) {
     User.find({}, function(err, allUsers){
         if(err){
             logger.error(err);
